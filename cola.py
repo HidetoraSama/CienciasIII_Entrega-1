@@ -12,6 +12,9 @@ class Cola:
         # Encolar es agregar al final de la cola.
         self.items.append(x)
 
+    def cabeza(self):
+        return self.items[0]
+
     def desencolar(self):
         """ Devuelve el elemento inicial y lo elimina de la cola.
             Si la cola está vacía levanta una excepción. """
