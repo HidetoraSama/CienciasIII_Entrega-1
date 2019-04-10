@@ -70,28 +70,129 @@ for i in range(0, len(res.items)):
 	editoriales.encolar(res.items[i][4])
 
 resFinal = Cola()
+
 resb = Cola()
-#Segundo filtro por cantidad de paginas, sacado de las tematicas ya ordenadas
+cTitulo = titulos.desencolar()
+cAutor = autores.desencolar()
+cTematica = tematicas.desencolar()
+cPagina = paginas.desencolar()
+cEditorial = editoriales.desencolar()
+
+resb.encolar([cTitulo, cAutor, cTematica, cPagina, cEditorial])
+#Separacion seccionada de los ordenamientos por tematica ya existentes
 while (not tematicas.es_vacia()):
-	#cola para almacenar los ordenamientos temporales
 
-	cTitulo = titulos.desencolar()
-	cAutor = autores.desencolar()
-	cTematica = tematicas.desencolar()
-	cPagina = paginas.desencolar()
-	cEditorial = editoriales.desencolar()
+	#Se verifica si la cabeza es igual a lo ya agregado y se ponen todos en un do while
+	if (tematicas.cabeza() == resb.cabeza()[2]):
+		cTitulo = titulos.desencolar()
+		cAutor = autores.desencolar()
+		cTematica = tematicas.desencolar()
+		cPagina = paginas.desencolar()
+		cEditorial = editoriales.desencolar()
 
-	#Verifica iguales y los pasa a una nueva cola para ordenarlos
-	if(not tematicas.es_vacia()):
-		if (cTematica == tematicas.cabeza()):
-			resb.encolar([cTitulo, cAutor, cTematica, cPagina, cEditorial])
-		else:#Si difieren, se prepara para ordenar la actual resb y pasarla a resFinal
-			print('\n')
-			print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in resb.items]))
-			resb = Cola()#setea una nueva lista para los siguientes en repetirse(si existen)
+		resb.encolar([cTitulo, cAutor, cTematica, cPagina, cEditorial])
+	else:#Si difieren, se prepara para ordenar la actual resb y pasarla a resFinal
+		#####Ordenmiento de actual resb y pasarlo a resFinal##########
+		temptitulos = Cola()
+		for i in range(0, len(resb.items)):
+			temptitulos.encolar(resb.items[i][0])
 
+		tempautores = Cola()
+		for i in range(0, len(resb.items)):
+			tempautores.encolar(resb.items[i][1])
+
+		temptematicas = Cola()
+		for i in range(0, len(resb.items)):
+			temptematicas.encolar(resb.items[i][2])
+
+		temppaginas = Cola()
+		for i in range(0, len(resb.items)):
+			temppaginas.encolar(resb.items[i][3])
+
+		tempeditoriales = Cola()
+		for i in range(0, len(resb.items)):
+			tempeditoriales.encolar(resb.items[i][4])
+
+		while (not temppaginas.es_vacia()):
+			#Segundo orden por paginas
+			tempMin = min(temppaginas.items)
+
+			tempcTitulo = temptitulos.desencolar()
+			tempcAutor = tempautores.desencolar()
+			tempcTematica = temptematicas.desencolar()
+			tempcPagina = temppaginas.desencolar()
+			tempcEditorial = tempeditoriales.desencolar()
+
+			#Revisa si pagina en cabeza es el minimo
+			if (tempcPagina != tempMin):#Si difiere pone los registros al final de la cola
+				temptitulos.encolar(tempcTitulo)
+				tempautores.encolar(tempcAutor)
+				temptematicas.encolar(tempcTematica)
+				temppaginas.encolar(tempcPagina)
+				tempeditoriales.encolar(tempcEditorial)
+			else:#Si no difiere se ubica en la cola del resultado
+				resFinal.encolar([tempcTitulo, tempcAutor, tempcTematica, tempcPagina, tempcEditorial])
+		###############
+
+
+		resb = Cola()#setea una nueva lista para los siguientes en repetirse(si existen)
+		cTitulo = titulos.desencolar()
+		cAutor = autores.desencolar()
+		cTematica = tematicas.desencolar()
+		cPagina = paginas.desencolar()
+		cEditorial = editoriales.desencolar()
+
+		resb.encolar([cTitulo, cAutor, cTematica, cPagina, cEditorial])
+
+temptitulos = Cola()
+for i in range(0, len(resb.items)):
+	temptitulos.encolar(resb.items[i][0])
+
+tempautores = Cola()
+for i in range(0, len(resb.items)):
+	tempautores.encolar(resb.items[i][1])
+
+temptematicas = Cola()
+for i in range(0, len(resb.items)):
+	temptematicas.encolar(resb.items[i][2])
+
+temppaginas = Cola()
+for i in range(0, len(resb.items)):
+	temppaginas.encolar(resb.items[i][3])
+
+tempeditoriales = Cola()
+for i in range(0, len(resb.items)):
+	tempeditoriales.encolar(resb.items[i][4])
+
+while (not temppaginas.es_vacia()):
+	#Segundo orden por paginas
+	tempMin = min(temppaginas.items)
+
+	tempcTitulo = temptitulos.desencolar()
+	tempcAutor = tempautores.desencolar()
+	tempcTematica = temptematicas.desencolar()
+	tempcPagina = temppaginas.desencolar()
+	tempcEditorial = tempeditoriales.desencolar()
+
+	#Revisa si pagina en cabeza es el minimo
+	if (tempcPagina != tempMin):#Si difiere pone los registros al final de la cola
+		temptitulos.encolar(tempcTitulo)
+		tempautores.encolar(tempcAutor)
+		temptematicas.encolar(tempcTematica)
+		temppaginas.encolar(tempcPagina)
+		tempeditoriales.encolar(tempcEditorial)
+	else:#Si no difiere se ubica en la cola del resultado
+		resFinal.encolar([tempcTitulo, tempcAutor, tempcTematica, tempcPagina, tempcEditorial])
+				
 print('-------------------Original-------------------')
 print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in data.items]))
 
 print('\n------------Orden por tematica--------------')
 print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in res.items]))
+
+print('\n-----------2do Orden por paginas------------')
+print('\n'.join(['\t'.join([str(cell) for cell in row]) for row in resFinal.items]))
+
+with open("infoLibrosORDENADO.csv","w", newline='') as f:
+    wr = csv.writer(f, delimiter=";")
+    wr.writerows(resFinal.items)
